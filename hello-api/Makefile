@@ -20,3 +20,7 @@ upgrade-go:
 	sudo tar -C /usr/local -xzf go$(GO_VERSION).$(GO_PLATFORM).tar.gz
 	rm go$(GO_VERSION).$(GO_PLATFORM).tar.gz
 
+build:
+	go build -o api cmd/main.go
+
+
