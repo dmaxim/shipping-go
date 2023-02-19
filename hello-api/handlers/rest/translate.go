@@ -16,7 +16,7 @@ type Resp struct {
 
 
 func TranslateHandler(w http.ResponseWriter, r *http.Request) {
-	/* handle */
+	
 	enc := json.NewEncoder(w)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 

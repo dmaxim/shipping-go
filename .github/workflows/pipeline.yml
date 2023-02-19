@@ -16,6 +16,9 @@ jobs:
           go-version: ^1.19
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Debug
+        run: ls -l
+        working-directory: ${{env.working-directory}}
       - name: Run Tests
         run: make test
         working-directory: ${{env.working-directory}}
