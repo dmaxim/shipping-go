@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - hello-api/**
+      - .github/workflows/**
 jobs:
   test:
     name: Test Application
