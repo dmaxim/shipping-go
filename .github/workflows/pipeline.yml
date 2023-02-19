@@ -9,6 +9,8 @@ jobs:
   test:
     name: Test Application
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./hello-api
     steps:
       - name: Setup Go 1.x
         uses: actions/setup-go@v3
