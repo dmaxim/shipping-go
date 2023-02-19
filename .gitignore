@@ -15,3 +15,5 @@
 # vendor/
 api
 api.exe
+coverage.out
+cover.html
