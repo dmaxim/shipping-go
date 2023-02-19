@@ -78,8 +78,6 @@ jobs:
     name: Release
     needs: build
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./hello-api
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
