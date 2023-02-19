@@ -19,9 +19,6 @@ jobs:
           go-version: ^1.19
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Debug
-        run: ls -l
-        working-directory: ${{env.working-directory}}
       - name: Run Tests
         run: make test
         working-directory: ${{env.working-directory}}
@@ -78,6 +75,8 @@ jobs:
     name: Release
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -94,9 +93,9 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: |
-           In process test
-          draft: false
-          prerelease: false
+            In process test
+          draft: true
+          prerelease: true
       - name: Upload Release binary
         uses: actions/upload-release-asset@v1
         env:
