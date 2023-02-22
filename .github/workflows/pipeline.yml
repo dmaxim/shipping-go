@@ -127,5 +127,8 @@ jobs:
           name: translate
           entry_point: Translate
           runtime: go119
+      # - name: Deploy App
+      #   id: deploy
+      #   uses: google-github-actions/deploy-appengine@v1
       - name: test
         run: curl "{{ steps.deploy.outputs.url }}/hello"
