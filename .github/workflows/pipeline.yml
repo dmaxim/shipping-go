@@ -129,7 +129,7 @@ jobs:
           name: translate
           entry_point: Translate
           runtime: go119
-          working-directory: ${{env.working-directory}}
+          source_dir: ${{env.working-directory}}
       # - name: Deploy App
       #   id: deploy
       #   uses: google-github-actions/deploy-appengine@v1
