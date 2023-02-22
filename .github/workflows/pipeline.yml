@@ -120,15 +120,15 @@ jobs:
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-      - name: Deploy function
-        id: deploy
-        uses: google-github-actions/deploy-cloud-functions@main
-        with:
-          name: translate
-          entry_point: Translate
-          runtime: go119
-      # - name: Deploy App
+      # - name: Deploy function
       #   id: deploy
-      #   uses: google-github-actions/deploy-appengine@v1
+      #   uses: google-github-actions/deploy-cloud-functions@main
+      #   with:
+      #     name: translate
+      #     entry_point: Translate
+      #     runtime: go119
+      - name: Deploy App
+        id: deploy
+        uses: google-github-actions/deploy-appengine@v1
       - name: test
         run: curl "{{ steps.deploy.outputs.url }}/hello"
