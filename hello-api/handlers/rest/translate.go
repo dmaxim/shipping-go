@@ -8,12 +8,10 @@ import (
 	"github.com/dmaxim/hello-api/translation"
 )
 
-
 type Resp struct {
-	Language string `json:"language"`
+	Language    string `json:"language"`
 	Translation string `json:"translation"`
 }
-
 
 func TranslateHandler(w http.ResponseWriter, r *http.Request) {
 	/* handle */
@@ -33,7 +31,7 @@ func TranslateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	resp := Resp{
-		Language: language,
+		Language:    language,
 		Translation: translation,
 	}
 

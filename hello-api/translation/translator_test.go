@@ -6,51 +6,50 @@ import (
 	"github.com/dmaxim/hello-api/translation"
 )
 
-
 func TestTranslate(t *testing.T) {
 	tt := []struct {
-		Word string
-		Language string
+		Word        string
+		Language    string
 		Translation string
 	}{
 		{
-			Word: "hello",
-			Language: "english",
+			Word:        "hello",
+			Language:    "english",
 			Translation: "hello",
 		},
 		{
-			Word: "hello",
-			Language: "german",
+			Word:        "hello",
+			Language:    "german",
 			Translation: "hallo",
 		},
 		{
-			Word: "hello",
-			Language: "finnish",
+			Word:        "hello",
+			Language:    "finnish",
 			Translation: "hei",
 		},
 		{
-			Word: "hello",
-			Language: "dutch",
+			Word:        "hello",
+			Language:    "dutch",
 			Translation: "",
 		},
 		{
-			Word: "bye",
-			Language: "german",
+			Word:        "bye",
+			Language:    "german",
 			Translation: "",
 		},
 		{
-			Word: "hello",
-			Language: "German",
+			Word:        "hello",
+			Language:    "German",
 			Translation: "hallo",
 		},
 		{
-			Word: "Hello",
-			Language: "german",
+			Word:        "Hello",
+			Language:    "german",
 			Translation: "hallo",
 		},
 		{
-			Word: "Hello",
-			Language: "french",
+			Word:        "Hello",
+			Language:    "french",
 			Translation: "bonjour",
 		},
 	}

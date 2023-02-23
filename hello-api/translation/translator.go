@@ -11,8 +11,8 @@ func Translate(word string, language string) string {
 	if word != "hello" {
 		return ""
 	}
-	
-	switch	language {
+
+	switch language {
 	case "english":
 		return "hello"
 	case "german":
