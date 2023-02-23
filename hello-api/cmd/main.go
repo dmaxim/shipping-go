@@ -25,6 +25,6 @@ func main() {
 }
 
 type Resp struct {
-	Language string `json:"language"`
+	Language    string `json:"language"`
 	Translation string `json:"translation"`
 }

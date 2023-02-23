@@ -11,27 +11,27 @@ import (
 
 func TestTranslateAPI(t *testing.T) {
 	tt := []struct {
-		Endpoint string
-		StatusCode int
-		ExpectedLanguage string
+		Endpoint            string
+		StatusCode          int
+		ExpectedLanguage    string
 		ExpectedTranslation string
 	}{
 		{
-			Endpoint: "/hello",
-			StatusCode: 200,
-			ExpectedLanguage: "english",
+			Endpoint:            "/hello",
+			StatusCode:          200,
+			ExpectedLanguage:    "english",
 			ExpectedTranslation: "hello",
 		},
 		{
-			Endpoint: "/hello?language=german",
-			StatusCode: 200,
-			ExpectedLanguage: "german",
+			Endpoint:            "/hello?language=german",
+			StatusCode:          200,
+			ExpectedLanguage:    "german",
 			ExpectedTranslation: "hallo",
 		},
 		{
-			Endpoint: "/hello?language=dutch",
-			StatusCode: 404,
-			ExpectedLanguage: "",
+			Endpoint:            "/hello?language=dutch",
+			StatusCode:          404,
+			ExpectedLanguage:    "",
 			ExpectedTranslation: "",
 		},
 	}
@@ -48,7 +48,7 @@ func TestTranslateAPI(t *testing.T) {
 			t.Errorf(`expected status code 200 but received %d`, rr.Code)
 		}
 
-		var resp  rest.Resp
+		var resp rest.Resp
 		json.Unmarshal(rr.Body.Bytes(), &resp)
 
 		if resp.Language != test.ExpectedLanguage {
@@ -58,7 +58,6 @@ func TestTranslateAPI(t *testing.T) {
 		if resp.Translation != test.ExpectedTranslation {
 			t.Errorf(`expected Translation "%s" but received %s`, test.ExpectedTranslation, resp.Translation)
 		}
-
 
 	}
 }
