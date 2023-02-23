@@ -136,6 +136,8 @@ jobs:
     name: Deploy PAAS
     runs-on: ubuntu-latest
     needs: test
+    env:
+      working-directory: ./hello-api
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -149,6 +151,8 @@ jobs:
       - name: Deploy App
         id: deploy
         uses: google-github-actions/deploy-appengine@v1
+        with:
+          source_dir: ${{env.working-directory}}
       - name: test
         id: test
         run: curl "${{ steps.deploy.outputs.url }}/translate/hello"
