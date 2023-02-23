@@ -130,8 +130,25 @@ jobs:
           entry_point: Translate
           runtime: go119
           source_dir: ${{env.working-directory}}
-      # - name: Deploy App
-      #   id: deploy
-      #   uses: google-github-actions/deploy-appengine@v1
       - name: test
         run: curl "${{ steps.deploy.outputs.url }}/hello"
+  deploy-pass:
+    name: Deploy PAAS
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+    - name: Checkout code
+      run: actions/checkout@v3
+      with: 
+        fetch-depth: 0
+    - name: Auth for deploy
+      id: auth
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+    - name: Deploy App
+      id: deploy
+      uses: google-github-actions/deploy-appengine@v1
+    - name: test
+      id: test
+      run: curl "${{ steps.deploy.outputs.url }}/translate/hello"
