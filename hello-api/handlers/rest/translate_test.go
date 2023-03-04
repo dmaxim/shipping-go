@@ -7,7 +7,17 @@ import (
 	"testing"
 
 	"github.com/dmaxim/hello-api/handlers/rest"
+	"github.com/dmaxim/hello-api/translation"
 )
+
+type stubbedService struct {}
+
+func (s *stubbedService) Translate(word string, language string) string {
+	if word == "foo" {
+		return "bar"
+	}
+	return ""
+}
 
 func TestTranslateAPI(t *testing.T) {
 	tt := []struct {
@@ -17,26 +27,27 @@ func TestTranslateAPI(t *testing.T) {
 		ExpectedTranslation string
 	}{
 		{
-			Endpoint:            "/hello",
+			Endpoint:            "/translate/hello",
 			StatusCode:          200,
 			ExpectedLanguage:    "english",
-			ExpectedTranslation: "hello",
+			ExpectedTranslation: "bar",
 		},
 		{
-			Endpoint:            "/hello?language=german",
+			Endpoint:            "/translate/hello?language=german",
 			StatusCode:          200,
 			ExpectedLanguage:    "german",
-			ExpectedTranslation: "hallo",
+			ExpectedTranslation: "bar",
 		},
 		{
-			Endpoint:            "/hello?language=dutch",
+			Endpoint:            "/translate/hello",
 			StatusCode:          404,
 			ExpectedLanguage:    "",
 			ExpectedTranslation: "",
 		},
 	}
 
-	handler := http.HandlerFunc(rest.TranslateHandler)
+	underTest := rest.NewTranslateHandler(translation.NewStaticService())
+	handler := http.HandlerFunc(underTest.TranslateHandler)
 
 	for _, test := range tt {
 		rr := httptest.NewRecorder()

@@ -25,6 +25,9 @@ jobs:
       - name: Run format Check
         run: make check-format
         working-directory: ${{ env.working-directory  }}
+      - name: Vet
+        run: go vet ./...
+        working-directory: ${{ env.working-directory }}
 
   test:
     name: Test Application

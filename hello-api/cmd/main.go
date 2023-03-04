@@ -8,6 +8,7 @@ import (
 
 	"github.com/dmaxim/hello-api/handlers"
 	"github.com/dmaxim/hello-api/handlers/rest"
+	"github.com/dmaxim/hello-api/translation"
 )
 
 func main() {
@@ -17,7 +18,10 @@ func main() {
 	}
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/hello", rest.TranslateHandler)
+	tranlationService := translation.NewStaticService()
+	translateHandler := rest.NewTranslateHandler(tranlationService)
+
+	mux.HandleFunc("/translate", translateHandler.TranslateHandler)
 	mux.HandleFunc("/health", handlers.HealthCheck)
 	log.Printf("listening on %s\n", addr)
 
