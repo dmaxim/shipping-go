@@ -6,7 +6,6 @@ import (
 	"strings"
 )
 
-
 type Resp struct {
 	Language    string `json:"language"`
 	Translation string `json:"translation"`
@@ -30,7 +29,7 @@ func (t *TranslateHandler) TranslateHandler(w http.ResponseWriter, r *http.Reque
 	/* handle */
 	enc := json.NewEncoder(w)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	
+
 	language := r.URL.Query().Get("language")
 	if language == "" {
 		language = "english"

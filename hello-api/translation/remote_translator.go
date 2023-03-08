@@ -12,8 +12,7 @@ var _ rest.Translator = &RemoteService{}
 
 type RemoteService struct {
 	client HelloClient
-	cache map[string]string
-
+	cache  map[string]string
 }
 
 type HelloClient interface {
@@ -21,9 +20,9 @@ type HelloClient interface {
 }
 
 func NewRemoteService(client HelloClient) *RemoteService {
-	return &RemoteService{ 
+	return &RemoteService{
 		client: client,
-		cache: make(map[string]string),
+		cache:  make(map[string]string),
 	}
 }
 
@@ -44,4 +43,3 @@ func (s *RemoteService) Translate(word string, language string) string {
 	s.cache[key] = resp
 	return resp
 }
-

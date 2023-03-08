@@ -10,7 +10,6 @@ import (
 	"github.com/dmaxim/hello-api/translation"
 )
 
-
 func TestTranslateAPI(t *testing.T) {
 	tt := []struct {
 		Endpoint            string

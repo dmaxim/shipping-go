@@ -10,8 +10,6 @@ func NewStaticService() *StaticService {
 	return &StaticService{}
 }
 
-
-
 func (s *StaticService) Translate(word string, language string) string {
 	word = sanitizeInput(word)
 	language = sanitizeInput(language)
