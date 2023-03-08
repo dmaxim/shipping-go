@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
-
-	"github.com/dmaxim/hello-api/translation"
 )
 
 type Resp struct {
@@ -13,7 +11,21 @@ type Resp struct {
 	Translation string `json:"translation"`
 }
 
-func TranslateHandler(w http.ResponseWriter, r *http.Request) {
+type Translator interface {
+	Translate(word string, language string) string
+}
+
+type TranslateHandler struct {
+	service Translator
+}
+
+func NewTranslateHandler(service Translator) *TranslateHandler {
+	return &TranslateHandler{
+		service: service,
+	}
+}
+
+func (t *TranslateHandler) TranslateHandler(w http.ResponseWriter, r *http.Request) {
 	/* handle */
 	enc := json.NewEncoder(w)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -24,7 +36,7 @@ func TranslateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	word := strings.ReplaceAll(r.URL.Path, "/", "")
-	translation := translation.Translate(word, language)
+	translation := t.service.Translate(word, language)
 	if translation == "" {
 		language = ""
 		w.WriteHeader(404)

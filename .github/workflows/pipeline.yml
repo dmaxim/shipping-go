@@ -1,5 +1,8 @@
 name: CI Checks
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -7,8 +10,28 @@ on:
       - hello-api/**
       - .github/workflows/**
 jobs:
+  format-check:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./hello-api
+    steps:
+      - name: Setup Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.19
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Run format Check
+        run: make check-format
+        working-directory: ${{ env.working-directory  }}
+      - name: Vet
+        run: go vet ./...
+        working-directory: ${{ env.working-directory }}
+
   test:
     name: Test Application
+    needs: format-check
     runs-on: ubuntu-latest
     env:
       working-directory: ./hello-api
@@ -132,27 +155,28 @@ jobs:
           source_dir: ${{env.working-directory}}
       - name: test
         run: curl "${{ steps.deploy.outputs.url }}/hello"
-  deploy-pass:
-    name: Deploy PAAS
-    runs-on: ubuntu-latest
-    needs: test
-    env:
-      working-directory: ./hello-api
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Auth for deploy
-        id: auth
-        uses: google-github-actions/auth@v1
-        with:
-          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-      - name: Deploy App
-        id: deploy
-        uses: google-github-actions/deploy-appengine@v1
-        with:
-          working_directory: ${{env.working-directory}}
-      - name: test
-        id: test
-        run: curl "${{ steps.deploy.outputs.url }}/translate/hello"
+  # deploy-pass:
+  #   name: Deploy PAAS
+  #   runs-on: ubuntu-latest
+  #   needs: test
+  #   env:
+  #     working-directory: ./hello-api
+  #   if: ${{ github.event_name=='push' && github.ref == 'refs/head/main'}}
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Auth for deploy
+  #       id: auth
+  #       uses: google-github-actions/auth@v1
+  #       with:
+  #         credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+  #     - name: Deploy App
+  #       id: deploy
+  #       uses: google-github-actions/deploy-appengine@v1
+  #       with:
+  #         working_directory: ${{env.working-directory}}
+  #     - name: test
+  #       id: test
+  #       run: curl "${{ steps.deploy.outputs.url }}/translate/hello"

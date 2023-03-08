@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/dmaxim/hello-api/handlers/rest"
+	"github.com/dmaxim/hello-api/translation"
 )
 
 func TestTranslateAPI(t *testing.T) {
@@ -17,7 +18,7 @@ func TestTranslateAPI(t *testing.T) {
 		ExpectedTranslation string
 	}{
 		{
-			Endpoint:            "/hello",
+			Endpoint:            "/hello?english",
 			StatusCode:          200,
 			ExpectedLanguage:    "english",
 			ExpectedTranslation: "hello",
@@ -29,14 +30,15 @@ func TestTranslateAPI(t *testing.T) {
 			ExpectedTranslation: "hallo",
 		},
 		{
-			Endpoint:            "/hello?language=dutch",
-			StatusCode:          404,
-			ExpectedLanguage:    "",
-			ExpectedTranslation: "",
+			Endpoint:            "/hello",
+			StatusCode:          200,
+			ExpectedLanguage:    "english",
+			ExpectedTranslation: "hello",
 		},
 	}
 
-	handler := http.HandlerFunc(rest.TranslateHandler)
+	underTest := rest.NewTranslateHandler(translation.NewStaticService())
+	handler := http.HandlerFunc(underTest.TranslateHandler)
 
 	for _, test := range tt {
 		rr := httptest.NewRecorder()
@@ -45,14 +47,14 @@ func TestTranslateAPI(t *testing.T) {
 		handler.ServeHTTP(rr, req)
 
 		if rr.Code != test.StatusCode {
-			t.Errorf(`expected status code 200 but received %d`, rr.Code)
+			t.Errorf(`expected status code %d but received %d`, test.StatusCode, rr.Code)
 		}
 
 		var resp rest.Resp
 		json.Unmarshal(rr.Body.Bytes(), &resp)
 
 		if resp.Language != test.ExpectedLanguage {
-			t.Errorf(`expected language "%s", but received %s`, test.Endpoint, resp.Language)
+			t.Errorf(`expected language "%s", but received %s`, test.ExpectedLanguage, resp.Language)
 		}
 
 		if resp.Translation != test.ExpectedTranslation {
