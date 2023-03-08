@@ -10,14 +10,6 @@ import (
 	"github.com/dmaxim/hello-api/translation"
 )
 
-type stubbedService struct {}
-
-func (s *stubbedService) Translate(word string, language string) string {
-	if word == "foo" {
-		return "bar"
-	}
-	return ""
-}
 
 func TestTranslateAPI(t *testing.T) {
 	tt := []struct {
@@ -27,22 +19,22 @@ func TestTranslateAPI(t *testing.T) {
 		ExpectedTranslation string
 	}{
 		{
-			Endpoint:            "/translate/hello",
+			Endpoint:            "/hello?english",
 			StatusCode:          200,
 			ExpectedLanguage:    "english",
-			ExpectedTranslation: "bar",
+			ExpectedTranslation: "hello",
 		},
 		{
-			Endpoint:            "/translate/hello?language=german",
+			Endpoint:            "/hello?language=german",
 			StatusCode:          200,
 			ExpectedLanguage:    "german",
-			ExpectedTranslation: "bar",
+			ExpectedTranslation: "hallo",
 		},
 		{
-			Endpoint:            "/translate/hello",
-			StatusCode:          404,
-			ExpectedLanguage:    "",
-			ExpectedTranslation: "",
+			Endpoint:            "/hello",
+			StatusCode:          200,
+			ExpectedLanguage:    "english",
+			ExpectedTranslation: "hello",
 		},
 	}
 
@@ -56,14 +48,14 @@ func TestTranslateAPI(t *testing.T) {
 		handler.ServeHTTP(rr, req)
 
 		if rr.Code != test.StatusCode {
-			t.Errorf(`expected status code 200 but received %d`, rr.Code)
+			t.Errorf(`expected status code %d but received %d`, test.StatusCode, rr.Code)
 		}
 
 		var resp rest.Resp
 		json.Unmarshal(rr.Body.Bytes(), &resp)
 
 		if resp.Language != test.ExpectedLanguage {
-			t.Errorf(`expected language "%s", but received %s`, test.Endpoint, resp.Language)
+			t.Errorf(`expected language "%s", but received %s`, test.ExpectedLanguage, resp.Language)
 		}
 
 		if resp.Translation != test.ExpectedTranslation {
