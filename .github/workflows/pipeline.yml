@@ -155,8 +155,6 @@ jobs:
           source_dir: ${{env.working-directory}}
       - name: test
         run: curl "${{ steps.deploy.outputs.url }}/hello"
-<<<<<<< Updated upstream
-=======
   containerize-buildpack:
     name: Build Container Buildpack
     runs-on: ubuntu-latest
@@ -191,7 +189,6 @@ jobs:
         run: docker image tag gcr.io/${{  secrets.GCP_PROJECT_ID }}/hello-api:latest ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
       - name: Push Docker Image to GHCR
         run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
->>>>>>> Stashed changes
   # deploy-pass:
   #   name: Deploy PAAS
   #   runs-on: ubuntu-latest
